@@ -24,11 +24,7 @@ app.use('/graphql', graphqlHTTP({
   rootValue: root,
   graphiql: true,
 }));
-app.get('/', (req, res) => {
-  res.json({
-    msg: 'Welcome to a GrapQL',
-  });
-});
+
 
 app.listen(PORT, () => {
   console.log(`Running a GraphQL API server at localhost:${PORT}/graphql'`);

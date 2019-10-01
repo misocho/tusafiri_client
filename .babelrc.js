@@ -1,6 +1,3 @@
 module.exports = {
-  "presets": [
-    "env",
-    "stage-0"
-  ]
+  "presets": ["@babel/preset-stage-0"]
 }
