@@ -1,31 +1,18 @@
 /* eslint-disable no-console */
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
+const { PubSub, GraphQLServer } = require('graphql-yoga');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
 const connect = require('./db');
-const logger = require('./middleWare/logger');
-const schema = require('./db/schema/User');
+const typeDefs = require('./db/Models/User/typeDefs');
+const resolvers = require('./db/Models/User/resolvers');
 
 dotenv.config();
 
-const app = express();
 const { PORT, DB_URL } = process.env;
-const root = {
-  ip: (args, request) => request.ip,
-};
-
 
 connect(DB_URL).catch((error) => console.log(error));
 
-app.use(logger);
-app.use('/graphql', graphqlHTTP({
-  schema,
-  rootValue: root,
-  graphiql: true,
-}));
-
-
-app.listen(PORT, () => {
-  console.log(`Running a GraphQL API server at localhost:${PORT}/graphql'`);
-});
+const pubsub = new PubSub();
+const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub } });
+mongoose.connection.once('open', () => server.start(() => console.log('We are connected at localhost:4000')));

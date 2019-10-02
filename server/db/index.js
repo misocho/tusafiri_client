@@ -30,6 +30,7 @@ const run = async (DB_URL) => {
     reconnectInterval: 3000,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   });
 };
 
