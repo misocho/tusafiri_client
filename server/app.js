@@ -11,8 +11,17 @@ dotenv.config();
 
 const { PORT, DB_URL } = process.env;
 
-connect(DB_URL).catch((error) => console.log(error));
+connect(DB_URL).catch((error) => console.log('An error occured while connecting to the database', error));
 
 const pubsub = new PubSub();
 const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub } });
-mongoose.connection.once('open', () => server.start(() => console.log('We are connected at localhost:4000')));
+
+const options = {
+  port: PORT,
+  endpoint: '/graphql',
+  subscriptions: '/subscriptions',
+  playground: '/playground',
+  playGround: true,
+};
+
+mongoose.connection.once('open', () => server.start(options, ({ port }) => console.log(`We are connected at localhost:${port}`)));
