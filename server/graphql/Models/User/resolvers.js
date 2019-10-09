@@ -1,6 +1,6 @@
 const { PubSub } = require('graphql-yoga');
 const User = require('./model');
-const { hashPassword } = require('../../../utils/helpers');
+const { comparePasswords } = require('../../../utils/helpers');
 
 const pubsub = new PubSub();
 
@@ -18,6 +18,17 @@ const resolvers = {
       });
       await user.save();
       pubsub.publish('newUser', { newUser: user });
+      return user;
+    },
+
+    loginUser: async (_, {
+      email, username, password,
+    }) => {
+      const user = await User.findOne(
+        { $or: [{ email }, { username }] },
+      );
+      const validatepassword = await comparePasswords(password, user.password);
+      console.log('Valid password', validatepassword);
       return user;
     },
 

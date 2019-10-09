@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const hashPassword = require('../../../utils/helpers');
+const { hashPassword } = require('../../../utils/helpers');
 
 const { Schema } = mongoose;
 // The user model

@@ -3,9 +3,9 @@ const { PubSub, GraphQLServer } = require('graphql-yoga');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-const connect = require('./db');
-const typeDefs = require('./db/Models/User/typeDefs');
-const resolvers = require('./db/Models/User/resolvers');
+const connect = require('./graphql');
+const typeDefs = require('./graphql/Models/User/typeDefs');
+const resolvers = require('./graphql/Models/User/resolvers');
 
 dotenv.config();
 
