@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const SALT_ROUNDS = 10;
+const SECRET_KEY = 'thisissecret';
 
 const hashPassword = async function hashPass(password) {
   const newpassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -13,5 +15,11 @@ const comparePasswords = async function comparePass(newPassword, storedPassword)
   return match;
 };
 
+const generateToken = async (username, id) => {
+  await jwt.sign(
+    { username, id },
+    SECRET_KEY,
+  );
+};
 
-module.exports = { hashPassword, comparePasswords };
+module.exports = { hashPassword, comparePasswords, generateToken };

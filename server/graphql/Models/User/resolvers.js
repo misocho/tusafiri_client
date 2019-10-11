@@ -1,6 +1,6 @@
 const { PubSub } = require('graphql-yoga');
 const User = require('./model');
-const { comparePasswords } = require('../../../utils/helpers');
+const { comparePasswords, generateToken } = require('../../../helpers/auth');
 
 const pubsub = new PubSub();
 
@@ -28,7 +28,9 @@ const resolvers = {
         { $or: [{ email }, { username }] },
       );
       const validatepassword = await comparePasswords(password, user.password);
-      console.log('Valid password', validatepassword);
+      const token = validatepassword ? await generateToken(user.username, user.id) : null;
+      console.log(user);
+      console.log('token --->', token);
       return user;
     },
 
