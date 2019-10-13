@@ -16,10 +16,13 @@ const comparePasswords = async function comparePass(newPassword, storedPassword)
 };
 
 const generateToken = async (username, id) => {
-  await jwt.sign(
+  const token = await jwt.sign(
     { username, id },
     SECRET_KEY,
   );
+
+  return token;
 };
+
 
 module.exports = { hashPassword, comparePasswords, generateToken };

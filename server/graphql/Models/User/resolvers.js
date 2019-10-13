@@ -27,11 +27,12 @@ const resolvers = {
       const user = await User.findOne(
         { $or: [{ email }, { username }] },
       );
-      const validatepassword = await comparePasswords(password, user.password);
-      const token = validatepassword ? await generateToken(user.username, user.id) : null;
-      console.log(user);
-      console.log('token --->', token);
-      return user;
+      const validatepassword = user ? await comparePasswords(password, user.password) : null;
+      let token;
+      if (validatepassword) {
+        token = await generateToken(user.username, user.id);
+      }
+      return { user, token };
     },
 
     updateUser: async (_, {
